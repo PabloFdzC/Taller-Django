@@ -1,0 +1,33 @@
+<h1>Mis notas</h1>
+<!--Aquí se puede poner el botón para crear notas y poner una parte para ver la lista de notas-->
+<a href="{% url 'cerrar-sesion' %}">Cerrar Sesión</a>
+<button type="button" onclick="loadDoc()">Crear nota</button>
+{% csrf_token %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+function loadDoc() {
+    let postObj = { 
+    id: 1,
+    nombre: 'dfasgkjasfdlasdf--------------', 
+    texto: 'AJAX AJAXAJAXAJAXAJAXAJAX',
+    }
+    const url = 'http://localhost:8000/guardar-nota/';
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded",
+        url: url,
+        data: postObj,
+        dataType: "json",
+
+        success: function(data) {console.log(data); return false;},
+        error: function(data) {console.log(data); return false;},
+    });
+}
+</script>

@@ -1,0 +1,4 @@
+<h1>Lista Notas</h1>
+{% for nota in notas %}
+<li>{{ nota.id }} - {{ nota.usuario }} - {{ nota.nombre }} - {{ nota.texto }}</li>
+{% endfor %}
