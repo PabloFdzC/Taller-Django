@@ -35,7 +35,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, primary_key=True, unique=True)
 
     # Los siguientes campos son necesarios porque estamos usando la clase
-    # AbstractBaseUser
+    # AbstractBaseUser y PermissionsMixin
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

@@ -41,4 +41,8 @@ urlpatterns = [
     path('guardar-nota/', VistaManejoNotas.guardar_nota, name='guardar-nota'),
     # Borra una nota según el id
     path('borrar-nota/', VistaManejoNotas.borrar_nota, name='borrar-nota'),
+    # vista de editar nota
+    path('editar-nota/', VistaManejoNotas.editar_nota, name='editar-nota'),
+    # vista de crear nota
+    path('crear-nota/', VistaManejoNotas.crear_nota, name='crear-nota'),
 ]

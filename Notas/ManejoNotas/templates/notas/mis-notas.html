@@ -1,33 +1,81 @@
-<h1>Mis notas</h1>
-<!--Aquí se puede poner el botón para crear notas y poner una parte para ver la lista de notas-->
-<a href="{% url 'cerrar-sesion' %}">Cerrar Sesión</a>
-<button type="button" onclick="loadDoc()">Crear nota</button>
+{% extends "componentes/principal.html" %}
+
+{% block titulo %}Mis notas{% endblock %}
+
+{% block contenido %}
+
+{% include "componentes/barra-navegacion.html" %}
+
 {% csrf_token %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container p-2">
+    <div class="card mx-auto">
+        <div class="card-body" id="cardB">
+            <div class="row justify-content-between">
+            <div class="col-6">
+                <h3 class="card-title tituloLista">Mis notas</h3>
+            </div>
+            <div class="d-grid col-2">
+                <div><a href="{% url 'crear-nota' %}" class="btn btn-primary">Crear nota</a></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="lista-notas">
+
+</div>
+{% load static %}
+<script src="{% static 'js/utilidades.js' %}"></script>
+<script src="{% static 'js/mis-notas.js' %}"></script>
 <script>
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-function loadDoc() {
-    let postObj = { 
-    id: 1,
-    nombre: 'dfasgkjasfdlasdf--------------', 
-    texto: 'AJAX AJAXAJAXAJAXAJAXAJAX',
+const ver_mis_notas_url = "{% url 'ver-mis-notas' %}";
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
     }
-    const url = 'http://localhost:8000/guardar-nota/';
-    $.ajaxSetup({
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRFToken', csrftoken);
-        }
-    });
-    $.ajax({
-        type: "POST",
-        contentType: "application/x-www-form-urlencoded",
-        url: url,
-        data: postObj,
-        dataType: "json",
+});
+hola();
+// function loadDoc() {
+//     let postObj = { 
+//     id: 1,
+//     nombre: 'dfasgkjasfdlasdf--------------', 
+//     texto: 'AJAX AJAXAJAXAJAXAJAXAJAX',
+//     }
+//     const url = 'http://localhost:8000/guardar-nota/';
+//     $.ajaxSetup({
+//         beforeSend: function(xhr) {
+//             xhr.setRequestHeader('X-CSRFToken', csrftoken);
+//         }
+//     });
+//     $.ajax({
+//         type: "POST",
+//         contentType: "application/x-www-form-urlencoded",
+//         url: url,
+//         data: postObj,
+//         dataType: "json",
 
-        success: function(data) {console.log(data); return false;},
-        error: function(data) {console.log(data); return false;},
-    });
-}
+//         success: function(data) {console.log(data); return false;},
+//         error: function(data) {console.log(data); return false;},
+//     });
+// }
+
+// function load(){
+//     const url = 'http://localhost:8000/ver-mis-notas/';
+// $.ajax({
+//     type: "GET",
+//     contentType: "application/x-www-form-urlencoded",
+//     url: url,
+
+//     success: function(data) {
+//         console.log(data);
+//         $('#mi-div').append(data);
+//         return false;},
+//     error: function(data) {console.log(data); return false;},
+// });
+// }
+
 </script>
+
+{% endblock %}

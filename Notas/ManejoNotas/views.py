@@ -39,7 +39,7 @@ def guardar_nota(peticion):
                 )
             nota.save()
             messages.success(peticion, 'Nota guardada.')
-            return HttpResponse(status=201)
+            return redirect('mis-notas')
         else:
             # Si tiene el id entonces se modifica la nota que esté
             # en la base de datos
@@ -52,7 +52,7 @@ def guardar_nota(peticion):
             nota.nombre = nombre
             nota.texto = texto
             nota.save()
-            return HttpResponse(status=201)
+            return redirect('mis-notas')
     raise PermissionDenied
 
 # Borra una nota según el id
@@ -61,9 +61,11 @@ def borrar_nota(peticion):
         id = peticion.POST.get('id')
         # Con filter busca la nota que se quiere borrar (una que tenga el id de la nota
         # y el usuario actual) y con delete la borra
-        Nota.objects.filter(Q(pk=id) & Q(usuario=peticion.user)).delete()
+
+        nota = Nota.objects.get(Q(pk=id) & Q(usuario=peticion.user))
+        nota.delete()
         messages.success(peticion, 'Nota borrada.')
-        return HttpResponse(status=201)
+        return redirect('mis-notas')
     raise PermissionDenied
 
 # Muestra una lista con las notas del usuario
@@ -73,3 +75,20 @@ def ver_mis_notas(peticion):
             'notas':Nota.objects.filter(usuario=peticion.user)
             })
     return HttpResponse(status=201)
+
+def editar_nota(peticion):
+    if peticion.method == 'GET' and peticion.user.is_authenticated:
+        id = peticion.GET.get('id')
+        nota = Nota.objects.filter(Q(pk=id) & Q(usuario=peticion.user))
+        nota = nota.first()
+        return render(peticion, 'notas/hacer-nota.html',{
+            'nota':nota
+            })
+    raise PermissionDenied
+
+def crear_nota(peticion):
+    if peticion.method == 'GET' and peticion.user.is_authenticated:
+        return render(peticion, 'notas/hacer-nota.html',{
+            'nota':None
+        })
+    raise PermissionDenied
